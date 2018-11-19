@@ -6,7 +6,9 @@ $(document).ready(function(){
   // var url2 = 'https://nominatim.openstreetmap.org/reverse';
   var data = [];
   var html = '';
+  var coordinates;
   //function to get the coordinates of the space station
+function myfun(){
     $.ajax({
       type:'GET',
       url:'http://api.open-notify.org/iss-now.json',
@@ -14,10 +16,14 @@ $(document).ready(function(){
       async:true,
       data:data,
       success:function(data){
+
         var lat = data['iss_position']['latitude'];
         var lon = data['iss_position']['longitude'];
         var coordinates = [lat, lon];
         console.log(coordinates);
+        html += '<h2>Location of the International Space Station Right Now : </h2>' + '<p>The space station is currently over: '  + coordinates + ' </p>';
+
+
         //internal AJAX call to translate the lat and long to name of place
             function coordinateToName(){
               $.ajax({
@@ -28,17 +34,22 @@ $(document).ready(function(){
                 data:coordinates,
                 success:function(coordinates){
                   //putting in the html
-                  html += '<div class="location">';
-                  html += '<h2>Location of the International Space Station Right Now</h2>';
-                  html += '<p>The space station is currently over </p>' + getLongLat().coordinates + '<p> </p>';
-                  html += '</div>';
+                html += '<p>The cityand country it is over is: '  + address + ' </p>';
+
                 }//closes second success function
               });//closes second AJAX call
-              $('#results').html(html);
-            }
-      }//closes first success function
-    });
-    setInterval(5000);
+             }
+        $('#results').html(html);
+
+      }
+
+ });
+} setInterval(myfun, 5000);
+
+
+
+
+
 
 
 
