@@ -6,10 +6,12 @@ $(document).ready(function(){
   var data = [];
   var data2 = [];
   var html = '';
+  var css = '';
   var timing_event = setInterval(timingFunction, 5000);
 
-  //function to get the coordinates of the space station
+//To update the location every five seconds, you’ll need to wrap the whole thing in a function that fires on a JS timing event.
 function timingFunction(){
+  //ajax function to get the coordinates of the space station
     $.ajax({
       type:'GET',
       url:'http://api.open-notify.org/iss-now.json',
@@ -21,10 +23,7 @@ function timingFunction(){
         var lon = data['iss_position']['longitude'];
         var url2 = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' + lat + '&' + 'lon=' + lon;
         // var coordinates = [lat, lon];
-
-        console.log(coordinates);
-        //internal AJAX call to translate the lat and long to name of place
-            //function coordinateToName(){
+        //nested AJAX call to translate the lat and long to the name of the place
               $.ajax({
                 type:'GET',
                 url:url2,
@@ -35,13 +34,15 @@ function timingFunction(){
                   console.log(data2);
                   var location = data2['display_name'];
                   if(data2['error'] == "Unable to geocode"){
-                    html = '<p>the ISS is over an ocean!</p>';
+                    html = '<p id="ocean">The ISS is currently over an ocean!</p>';
+                    $('#results').css = ('background-image', 'url(./img/ocean.jpg)');
                   }
                   else{
                   //putting in the html
-                  html = location;
+                  html = '<h2>Location of the International Space Station Right Now: </h2>' +
+                  '<p>The space station is currently over: </p>' + location;
                   }
-                 $('#location').html(html);
+                 $('#results').html(html);
                 }//closes second success function
               });//closes second AJAX call
              }
@@ -51,6 +52,6 @@ function timingFunction(){
 
 
 
-  //To update the location every five seconds, you’ll need to wrap the whole thing in a function that fires on a JS timing event.
+
 
   //The API will throw an error in the console that reads “error: unable to geocode.” So you’ll need to account for that. If the geocoding API throws the error, display a message that reads, “The space station is currently over an ocean.” Otherwise, show the city/country message.

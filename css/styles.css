@@ -1,1 +1,15 @@
-
+h1, h2{
+  font-family: 'Allerta Stencil', sans-serif;
+  text-align: center;
+  color:white;
+}
+p{
+  text-align: center;
+  color:black;
+}
+#ocean{
+  color:#009DFF;
+}
+html{
+  background-color: #555555;
+}
