@@ -2,13 +2,14 @@ $(document).ready(function(){
   console.log('scripts loaded');
 
   //declare variables
-  // var url = 'http://api.open-notify.org/iss-now.json';
-  // var url2 = 'https://nominatim.openstreetmap.org/reverse';
+
   var data = [];
+  var data2 = [];
   var html = '';
-  var coordinates;
+  var timing_event = setInterval(timingFunction, 5000);
+
   //function to get the coordinates of the space station
-function myfun(){
+function timingFunction(){
     $.ajax({
       type:'GET',
       url:'http://api.open-notify.org/iss-now.json',
@@ -16,45 +17,41 @@ function myfun(){
       async:true,
       data:data,
       success:function(data){
-
         var lat = data['iss_position']['latitude'];
         var lon = data['iss_position']['longitude'];
-        var coordinates = [lat, lon];
+        var url2 = 'https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=' + lat + '&' + 'lon=' + lon;
+        // var coordinates = [lat, lon];
+
         console.log(coordinates);
-        html += '<h2>Location of the International Space Station Right Now : </h2>' + '<p>The space station is currently over: '  + coordinates + ' </p>';
-
-
         //internal AJAX call to translate the lat and long to name of place
-            function coordinateToName(){
+            //function coordinateToName(){
               $.ajax({
                 type:'GET',
-                url:'https://nominatim.openstreetmap.org/reverse',
+                url:url2,
                 dataType:'json',
                 async:true,
-                data:coordinates,
-                success:function(coordinates){
+                data:data2,
+                success:function(data2){
+                  console.log(data2);
+                  if(console.log() == "Unable to geocode"){
+                    html = '<p>the ISS is over an ocean!</p>';
+                  }
+                  else{
+                  address = [coordinates];
                   //putting in the html
-                html += '<p>The cityand country it is over is: '  + address + ' </p>';
-
+                  html += address;
+                  console.log(address);
+                  }
+                 $('#coordinates').html(html);
                 }//closes second success function
               });//closes second AJAX call
              }
-        $('#results').html(html);
-
-      }
-
- });
-} setInterval(myfun, 5000);
-
-
-
-
-
-
+      });
+ }
+});
 
 
 
   //To update the location every five seconds, you’ll need to wrap the whole thing in a function that fires on a JS timing event.
 
   //The API will throw an error in the console that reads “error: unable to geocode.” So you’ll need to account for that. If the geocoding API throws the error, display a message that reads, “The space station is currently over an ocean.” Otherwise, show the city/country message.
-});
