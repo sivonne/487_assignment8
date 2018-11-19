@@ -1,14 +1,11 @@
 $(document).ready(function(){
   console.log('scripts loaded');
-
   //declare variables
-
   var data = [];
   var data2 = [];
   var html = '';
   var css = '';
   var timing_event = setInterval(timingFunction, 5000);
-
 //To update the location every five seconds, you’ll need to wrap the whole thing in a function that fires on a JS timing event.
 function timingFunction(){
   //ajax function to get the coordinates of the space station
@@ -33,25 +30,24 @@ function timingFunction(){
                 success:function(data2){
                   console.log(data2);
                   var location = data2['display_name'];
+                  //if the station is over the ocean, provide a message
                   if(data2['error'] == "Unable to geocode"){
                     html = '<p id="ocean">The ISS is currently over an ocean!</p>';
-                    $('#results').css = ('background-image', 'url(./img/ocean.jpg)');
                   }
+                  //else, give the location of the station
                   else{
                   //putting in the html
-                  html = '<h2>Location of the International Space Station Right Now: </h2>' +
+                  html =
                   '<p>The space station is currently over: </p>' + location;
                   }
                  $('#results').html(html);
                 }//closes second success function
               });//closes second AJAX call
-             }
-      });
- }
-});
+            }//closes first success function
+      });//closes first AJAX call
+ }//closes timingFunction
+});//closes document ready function
 
 
-
-
-
-  //The API will throw an error in the console that reads “error: unable to geocode.” So you’ll need to account for that. If the geocoding API throws the error, display a message that reads, “The space station is currently over an ocean.” Otherwise, show the city/country message.
+//sources:
+//helpful resource for setInterval: https://www.w3schools.com/jsref/met_win_setinterval.asp

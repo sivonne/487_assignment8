@@ -1,11 +1,22 @@
-h1, h2{
+h1{
   font-family: 'Allerta Stencil', sans-serif;
   text-align: center;
   color:white;
+  font-size:40px;
 }
-p{
+p, #results{
   text-align: center;
-  color:black;
+  color:pink;
+  font-size: 20px;
+  padding-top:20px;
+  font-family: 'Roboto Mono', monospace;
+  justify-content: center;
+  align-content: center;
+}
+
+#results{
+  border-style: dashed;
+  border-color: white;
 }
 #ocean{
   color:#009DFF;
