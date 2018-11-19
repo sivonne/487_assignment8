@@ -33,16 +33,15 @@ function timingFunction(){
                 data:data2,
                 success:function(data2){
                   console.log(data2);
-                  if(console.log() == "Unable to geocode"){
+                  var location = data2['display_name'];
+                  if(data2['error'] == "Unable to geocode"){
                     html = '<p>the ISS is over an ocean!</p>';
                   }
                   else{
-                  address = [coordinates];
                   //putting in the html
-                  html += address;
-                  console.log(address);
+                  html = location;
                   }
-                 $('#coordinates').html(html);
+                 $('#location').html(html);
                 }//closes second success function
               });//closes second AJAX call
              }
